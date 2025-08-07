@@ -28,30 +28,6 @@ Your task is to verify whether a markdown article meets each of the following cr
 
 Now evaluate the article below:
 """
-
-# def run_qa(markdown_path):
-#     with open(markdown_path, "r", encoding="utf-8") as f:
-#         enriched_article = f.read()
-#     response = instructor_client.chat.completions.create(
-#         model="openai/gpt-3.5-turbo",
-#         response_model=QA,
-#         messages=[
-#             {"role": "system", "content": QA_PROMPT},
-#             {"role": "user", "content": enriched_article}
-#         ]
-#     )
-#     # logger.info(
-#     #     f" QA Result:\n"
-#     #     f"  has_two_links = {response.has_two_links}\n"
-#     #     f"  has_two_images = {response.has_two_images}\n"
-#     #     f"  has_valid_alt_text = {response.has_valid_alt_text}\n"
-#     #     f"  follows_brand_voice = {response.follows_brand_voice}\n"
-#     #     f"  accepted = {response.accepted}\n"
-#     #     f"  score = {response.score}"
-#     # )
-#     logger.info(f"QA Verdict → accepted: {response.accepted}, score: {response.score}")
-#     return response
-
 def run_qa(enriched_article: str):
     response = instructor_client.chat.completions.create(
         model="openai/gpt-3.5-turbo",

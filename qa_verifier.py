@@ -40,15 +40,7 @@ def verify_article(markdown_path):
             {"role": "user", "content": enriched_article}
         ]
     )
-    # logger.info(
-    #     f" QA Result:\n"
-    #     f"  has_two_links = {response.has_two_links}\n"
-    #     f"  has_two_images = {response.has_two_images}\n"
-    #     f"  has_valid_alt_text = {response.has_valid_alt_text}\n"
-    #     f"  follows_brand_voice = {response.follows_brand_voice}\n"
-    #     f"  accepted = {response.accepted}\n"
-    #     f"  score = {response.score}"
-    # )
+    
     logger.info(f"QA Verdict → accepted: {response.accepted}, score: {response.score}")
     return response
 
