@@ -11,3 +11,9 @@ dependencies = [
     "redis>=6.3.0",
     "uvicorn>=0.35.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "ruff>=0.12.7",
+]

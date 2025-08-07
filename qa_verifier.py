@@ -1,6 +1,6 @@
 import openai
 import instructor
-from shema import QAEnrichedArticle as QA
+from schema import QAEnrichedArticle as QA
 from utils import llm_client
 from utils.logger import get_logger
 
@@ -29,24 +29,31 @@ Your task is to verify whether a markdown article meets each of the following cr
 Now evaluate the article below:
 """
 
+
 def verify_article(markdown_path):
     with open(markdown_path, "r", encoding="utf-8") as f:
         enriched_article = f.read()
     response = instructor_client.chat.completions.create(
-        model="openai/gpt-3.5-turbo",
+        model="google/gemini-2.5-flash-lite",
         response_model=QA,
         messages=[
             {"role": "system", "content": QA_PROMPT},
-            {"role": "user", "content": enriched_article}
-        ]
+            {"role": "user", "content": enriched_article},
+        ],
     )
-    
+
     logger.info(f"QA Verdict → accepted: {response.accepted}, score: {response.score}")
     return response
 
+
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser(description="Run QA verification on enriched article")
-    parser.add_argument("--markdown_path", required=True, help="Path to enriched markdown article")
+
+    parser = argparse.ArgumentParser(
+        description="Run QA verification on enriched article"
+    )
+    parser.add_argument(
+        "--markdown_path", required=True, help="Path to enriched markdown article"
+    )
     args = parser.parse_args()
     verify_article(args.markdown_path)

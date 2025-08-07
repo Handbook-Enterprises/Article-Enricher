@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from .celery_worker import celery_app
+
 # from .tasks import dummy_task
 from typing import List
-from utils import enrichment_utils
 from .tasks import enrich_and_verify_article
+
 app = FastAPI()
+
 
 class ArticleSubmission(BaseModel):
     article: str
@@ -13,12 +15,13 @@ class ArticleSubmission(BaseModel):
 
 
 @app.post("/submit")
-def submit_article(payload:ArticleSubmission):
-    task = enrich_and_verify_article.delay(payload.article,payload.keywords)
-    return {"task_id":task.id}
+def submit_article(payload: ArticleSubmission):
+    task = enrich_and_verify_article.delay(payload.article, payload.keywords)
+    return {"task_id": task.id}
+
 
 @app.get("/status/{task_id}")
-def get_task_status(task_id:str):
+def get_task_status(task_id: str):
     result = celery_app.AsyncResult(task_id)
     if result.state == "PENDING":
         return {"status": "not_found"}
@@ -31,7 +34,3 @@ def get_task_status(task_id:str):
 
     elif result.state == "SUCCESS":
         return {"status": "success", "result": result.result}
-
-
-
-

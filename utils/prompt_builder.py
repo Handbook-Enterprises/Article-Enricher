@@ -1,16 +1,24 @@
 import os
 
+
 def load_file(filepath):
     """Utility to load content from a file."""
 
     if not os.path.exists(filepath):
         print(f"File not found: {filepath}")
         raise FileNotFoundError(f"File not found: {filepath}")
-    with open(filepath, 'r', encoding='utf-8') as f:
+    with open(filepath, "r", encoding="utf-8") as f:
         return f.read().strip()
 
 
-def build_prompt(article_text, keywords, links, images, brand_rules):
+def build_prompt(
+    article_text,
+    keywords,
+    links,
+    images,
+    brand_rules,
+    previous_qa_explanation: str | None = None,
+):
     """
     Build a well-structured prompt for the LLM.
     """
@@ -21,26 +29,58 @@ def build_prompt(article_text, keywords, links, images, brand_rules):
     primary_images = images[:2]
     fallback_images = images[2:]
 
-    link_instructions = "\n".join([
-        f"- Insert a Markdown link for the keyword: '{link['keyword']}', using this URL: {link['url']}"
-        for link in primary_links
-    ]) or "No internal links to insert."
+    link_instructions = (
+        "\n".join(
+            [
+                f"- Insert a Markdown link for the keyword: '{link['keyword']}', using this URL: {link['url']}"
+                for link in primary_links
+            ]
+        )
+        or "No internal links to insert."
+    )
 
-    image_instructions = "\n".join([
-        f"- (Candidate #{i+1}) For keyword '{img['keyword']}', insert this image URL: {img['url']} (add descriptive alt-text)"
-        for i, img in enumerate(primary_images)
-    ]) or "No images to insert."
+    image_instructions = (
+        "\n".join(
+            [
+                f"- (Candidate #{i + 1}) For keyword '{img['keyword']}', insert this image URL: {img['url']} (add descriptive alt-text)"
+                for i, img in enumerate(primary_images)
+            ]
+        )
+        or "No images to insert."
+    )
 
     # Add fallback note if more than 2 are available
     if fallback_links:
-        link_instructions += "\n- If any of the above are not contextually relevant, you may use these alternatives:\n" + "\n".join(
-            [f"  - Alternative link: '{link['keyword']}' → {link['url']}" for link in fallback_links]
+        link_instructions += (
+            "\n- If any of the above are not contextually relevant, you may use these alternatives:\n"
+            + "\n".join(
+                [
+                    f"  - Alternative link: '{link['keyword']}' → {link['url']}"
+                    for link in fallback_links
+                ]
+            )
         )
 
     if fallback_images:
-        image_instructions += "\n- You may also consider these alternate image candidates:\n" + "\n".join(
-            [f"  - Alt image: '{img['keyword']}' → {img['url']}" for img in fallback_images]
+        image_instructions += (
+            "\n- You may also consider these alternate image candidates:\n"
+            + "\n".join(
+                [
+                    f"  - Alt image: '{img['keyword']}' → {img['url']}"
+                    for img in fallback_images
+                ]
+            )
         )
+
+    qa_feedback = ""
+    if previous_qa_explanation:
+        qa_feedback = f"""
+--- Previous QA Feedback ---
+Your last attempt failed QA with the following explanation:
+{previous_qa_explanation}
+
+Carefully review this feedback and adjust your approach to meet all criteria in this attempt.
+---"""
 
     prompt = f"""
 You are a content editor AI.
@@ -59,6 +99,8 @@ Your job is to:
   - **Do not reuse the same image twice. Choose two different image URLs.**
 
 3. Follow the brand style rules below carefully.
+
+{qa_feedback}
 
 ---
 ### EXAMPLES:
@@ -87,7 +129,7 @@ Your job is to:
 {brand_rules}
 
 ### KEYWORDS TO CONSIDER:
-{', '.join(keywords)}
+{", ".join(keywords)}
 
 ---
 
@@ -97,6 +139,8 @@ Now here is the article you need to enrich:
 
 ---
 
-Return only the final enriched article in Markdown format. Do not include explanations or extra text.
+Your output should contain two main parts:
+1.  `enriched_article`: The full enriched article in Markdown format.
+2.  `explanation`: A brief explanation (2-3 sentences) of your reasoning for link and image placement, how you adhered to brand guidelines, and how you addressed any previous QA feedback.
 """
     return prompt

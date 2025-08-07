@@ -4,6 +4,7 @@ import os
 # Ensure the logs directory exists
 os.makedirs("logs", exist_ok=True)
 
+
 def get_logger(name: str = __name__) -> logging.Logger:
     logger = logging.getLogger(name)
     if not logger.handlers:
