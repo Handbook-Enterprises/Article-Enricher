@@ -1,9 +1,9 @@
 # Capturing Carbon: A Practical Guide to Carbon Capture and Storage Technologies
 
+![A warning sign on a carbon dioxide pipeline](https://upload.wikimedia.org/wikipedia/commons/5/53/Carbon_dioxide_pipeline_warning_sign.JPG)
+
 Carbon Capture and Storage (CCS) has re‑emerged as a central pillar in net‑zero roadmaps published by the IPCC, the International Energy Agency, and dozens of national governments. Put simply, CCS is a three‑step process: **capture** the CO₂ at the point of emission, **compress and transport** the gas, and **store** it away from the atmosphere for centuries—preferably in deep geological formations.
 
-![Coal Carbon Capture Technology In Use](https://upload.wikimedia.org/wikipedia/commons/9/9f/Coal_Carbon_Capture_Technology_In_Use.png)
-  
 ## How CO₂ is captured
 
 1. **Post‑combustion scrubbing** – Flue gas from power plants is washed with amine solvents that bond with CO₂.  
@@ -16,8 +16,6 @@ Advances in membrane materials and low‑temperature sorbents have cut capture e
 
 Once captured, CO₂ is compressed into a super‑critical fluid and sent via pipeline or ship. The United States alone operates more than 8,000 km of dedicated CO₂ pipelines, primarily serving the enhanced oil‑recovery sector, but new lines designed exclusively for permanent storage are under permitting review on five continents.
 
-![Carbon Dioxide (CO2) Scrubber](https://upload.wikimedia.org/wikipedia/commons/3/30/Carbon_Dioxide_%28CO2%29_Scrubber.jpg)
-
 ## Storage options and risks
 
 * **Saline aquifers** – Porous rock formations located 800–3,000 m below ground.  
@@ -28,10 +26,14 @@ Leakage remains the chief public concern; however, monitoring technologies such 
 
 ## Economics and policy
 
-BloombergNEF estimates the levelised cost of CO₂ capture at \$54–123 t⁻¹ today, but recent U.S. Inflation Reduction Act tax credits (45Q) pay up to \$85 t⁻¹ for storage in saline formations. Similar incentives exist in Canada, the U.K., and Japan.
+BloombergNEF estimates the levelised cost of CO₂ capture at $54–123 t⁻¹ today, but recent U.S. Inflation Reduction Act tax credits (45Q) pay up to $85 t⁻¹ for storage in saline formations. Similar incentives exist in Canada, the U.K., and Japan.
 
 ## Outlook
 
 Meeting the IEA’s Sustainable Development Scenario requires scaling CCS capacity from today’s 52 Mt yr⁻¹ to 1.7 Gt yr⁻¹ by 2040. While critics argue CCS prolongs the life of fossil fuels, the consensus among climate modellers is clear: without large‑scale carbon capture, the cost of achieving net‑zero could rise by 70 %.
 
 CCS is not a silver bullet, but in sectors where process emissions are unavoidable—cement, steel, fertiliser—it may be the only viable route to deep decarbonisation.
+
+---
+
+*Read more about [CCS projects](https://www.sciencedirect.com/science/article/abs/pii/S0264817224003143) and [carbon storage methods](https://www.researchgate.net/publication/371462685_Opportunities_and_challenges_in_CO2_geologic_utilization_and_storage).*
