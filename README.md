@@ -68,13 +68,96 @@ You can inspect your database schemas using:
 uv run python main.py
 ```
 
+## Running with Docker Compose
+
+For a containerized setup, you can use Docker Compose to run all services (Redis, FastAPI app, Celery worker).
+
+1.  **Ensure Docker is running** on your system.
+
+2.  **Build and start the services** from the project root directory:
+
+    ```bash
+    docker compose up --build
+    ```
+
+    This will:
+    - Build the Docker images for the app and worker.
+    - Start the Redis, FastAPI, and Celery worker services.
+
+3.  **Interact with the API** (once services are up):
+
+    *   **Start a new task:**
+
+        ```bash
+        curl -X POST "http://127.0.0.1:8000/start-task?x=5&y=10"
+        ```
+
+        This will return a `task_id`.
+
+    *   **Check task status:**
+
+        ```bash
+        curl http://127.0.0.1:8000/task-status/{task_id}
+        ```
+
+        Replace `{task_id}` with the ID you received from the previous step.
+
+4.  **To stop the services** and remove containers, networks, and volumes:
+
+    ```bash
+    docker compose down -v
+    ```
+
 ## Usage
+
+### Article Enrichment (Local Development)
 
 Run the enrichment pipeline:
 
 ```bash
 uv run python run.py --article_path data/article_1.md --keywords_path data/keywords_1.txt
 ```
+
+### FastAPI Application (Local Development)
+
+The project also includes a FastAPI application for handling background tasks using Celery.
+
+**1. Start the Celery Worker:**
+
+In a separate terminal, start the Celery worker. This will listen for tasks from the Redis queue. Make sure you have Redis running on your machine.
+
+```bash
+PYTHONPATH=. uv run celery -A app.tasks worker --loglevel=info
+```
+
+**2. Start the FastAPI Server:**
+
+In another terminal, start the FastAPI server using uvicorn.
+
+```bash
+uv run uvicorn app.main:app --reload
+```
+
+**3. Interact with the API:**
+
+You can now send requests to the API.
+
+*   **Start a new task:**
+
+    ```bash
+    curl -X POST "http://127.0.0.1:8000/start-task?x=5&y=10"
+    ```
+
+    This will return a `task_id`.
+
+*   **Check task status:**
+
+    ```bash
+    curl http://127.0.0.1:8000/task-status/{task_id}
+    ```
+
+    Replace `{task_id}` with the ID you received from the previous step.
+
 
 ### Input Files
 
@@ -112,7 +195,10 @@ Logs are written to `logs/enrichment.log` and displayed in the console.
 ## Project Structure
 
 ```
-Desktop/viewengine/
+article_enricher/
+├── app/
+│   ├── main.py           # FastAPI application
+│   └── tasks.py          # Celery tasks
 ├── run.py              # Main entry point
 ├── main.py             # Database inspection utility
 ├── utils/
